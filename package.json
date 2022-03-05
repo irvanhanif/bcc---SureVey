@@ -1,0 +1,29 @@
+{
+  "name": "bcc-surevey",
+  "version": "1.0.0",
+  "description": "this is for bcc internship",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irvanhanif/bcc-SureVey.git"
+  },
+  "author": "irvanhanif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irvanhanif/bcc-SureVey/issues"
+  },
+  "homepage": "https://github.com/irvanhanif/bcc-SureVey#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "gitignore": "^0.7.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3"
+  }
+}
