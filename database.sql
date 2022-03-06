@@ -125,6 +125,7 @@ CREATE TABLE bcc.user_paket
 (
     id_user SMALLINT,
     id_paket SMALLINT,
+    payment_gateway SMALLINT,
     buy_paket TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

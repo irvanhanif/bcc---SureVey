@@ -15,6 +15,16 @@ module.exports = {
 
                 return callback(null, result);
             }
-        )
+        );
+    },
+    allPaket: (callback) => {
+        connection.query(
+            `SELECT * FROM ${tablename}`,
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
     }
 }

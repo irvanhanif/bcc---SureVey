@@ -5,7 +5,6 @@ const tablename = "user";
 module.exports = {
     postUser: (req, callback) => {
         req.ttl = req.ttl + " 00:00:00";
-        console.log(req.ttl)
         req.ttl = new Date(req.ttl+ "+0000").toISOString();
         connection.query(
             `INSERT INTO ${tablename} (email, password, username, ttl, id_gender, id_pekerjaan, id_status, id_domisili)

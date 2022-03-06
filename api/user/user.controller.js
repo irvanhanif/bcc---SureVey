@@ -4,7 +4,7 @@ const {
     getUserbyEmail
 } = require('./user.service');
 const { postDomisili } = require('../domisili/domisili.service');
-const { buyPaket } = require('./paket.service');
+const { buyPaket, allPaket } = require('./paket.service');
 const { takeVoucher } = require('./voucher.service');
 const { ERROR, SUCCESS } = require('../respon');
 const { genSaltSync, hashSync, compareSync } = require("bcryptjs");
@@ -26,6 +26,7 @@ module.exports = {
                     if(errors1) return ERROR(res, 404, errors);
 
                     delete results1[0].password;
+                    results1[0].ttl = new Date(results1[0].ttl).toLocaleDateString();
                     results1[0].token = sign({user: results1[0]}, process.env.APP_KEY, {algorithm: "HS256", expiresIn: "24h"});
                     return SUCCESS(res, 200, results1);
                 });
@@ -49,6 +50,13 @@ module.exports = {
                 return SUCCESS(res, 200, results);
             });
         });
+    },
+    getAllPaket: (req, res) => {
+        allPaket((error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            return SUCCESS(res, 200, result);
+        })
     },
     buyPaket: (req, res) => {
         req.body.id_paket = req.params.id;

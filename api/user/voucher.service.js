@@ -16,6 +16,6 @@ module.exports = {
 
                 return callback(null, result);
             }
-        )
+        );
     }
 }
