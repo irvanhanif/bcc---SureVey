@@ -116,17 +116,10 @@ CREATE TABLE bcc.paket
     id_paket SMALLINT NOT NULL AUTO_INCREMENT,
     nama_paket VARCHAR(45),
     harga_paket BIGINT,
-    poin_paket BIGINT,
+    poin_paket INTEGER,
+    max_respon INTEGER,
 
     PRIMARY KEY(id_paket)
-);
-
-CREATE TABLE bcc.user_paket
-(
-    id_user SMALLINT,
-    id_paket SMALLINT,
-    payment_gateway SMALLINT,
-    buy_paket TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE bcc.kuesioner
@@ -138,6 +131,7 @@ CREATE TABLE bcc.kuesioner
     syarat_tmbh VARCHAR(200),
     id_paket SMALLINT,
     id_user SMALLINT,
+    foto VARCHAR(255),
     create_time_kuesioner TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time_kuesioner TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -172,6 +166,20 @@ CREATE TABLE bcc.user_voucher
         REFERENCES bcc.user(id_user)
 );
 
+CREATE TABLE bcc.payment
+(
+    id_payment VARCHAR(45) NOT NULL,
+    id_paket SMALLINT,
+    id_user SMALLINT,
+    response_midtrans TEXT,
+
+    PRIMARY KEY (id_payment),
+    FOREIGN KEY (id_paket)
+        REFERENCES bcc.paket(id_paket),
+    FOREIGN KEY (id_user)
+        REFERENCES bcc.user(id_user)
+);
+
 INSERT INTO bcc.gender (gender) VALUES ('Perempuan'), ('Laki-Laki');
 
 INSERT INTO bcc.pekerjaan (nama_pekerjaan) VALUES 
@@ -183,7 +191,9 @@ INSERT INTO bcc.status (ktg_status) VALUES ('Menikah'), ('Belum Menikah');
 
 INSERT INTO bcc.voucher (id_voucher, nama_voucher, sk, poin_voucher) VALUES ('A0012', 'go-food', 'baik dan sholeh', 20000);
 
-INSERT INTO bcc.paket (nama_paket, harga_paket, poin_paket) VALUES ("paket hemat", 50000, 5000);
+INSERT INTO bcc.paket (nama_paket, harga_paket, poin_paket, max_respon) VALUES 
+("Gratis", 0, 5, 50), ("Paket Hemat", 10000, 30, 100), ("Paket Deluxe", 20000, 40, 150), 
+("Paket Premium", 25000, 40, 200), ("Paket VVIP", 50000, 45, 425);
 
 INSERT INTO bcc.provinsi (nama_provinsi) VALUES
 ('NAD Aceh'), ('Sumatera Utara'), ('Sumatera Barat'), ('Sumatera Selatan'), ('Riau'), 

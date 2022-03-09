@@ -6,6 +6,7 @@ const {
 const { postKriteria } = require('../kriteria/kriteria.service');
 const { postDomisili } = require('../domisili/domisili.service');
 const { postUsia } = require('../kriteria/usia.sevice');
+const upload = require('../multer');
 const { ERROR, SUCCESS } = require('../respon');
 
 module.exports = {
@@ -24,10 +25,16 @@ module.exports = {
                     if(errors1) return ERROR(res, 500, errors1);
     
                     req.body.id_kriteria = results1.insertId;
-                    postKuesioner(req.body, (errors2, results2) => {
+                    upload(req, res, (errors2) => {
                         if(errors2) return ERROR(res, 500, errors2);
-    
-                        return SUCCESS(res, 200, "success submit form");
+                        if(req.file == undefined) req.body.foto = 'SVP000000-Sample'+ Math.floor(Math.random() * 3 + 1) + '.png';
+                        else req.body.foto = req.file.filename;
+
+                        postKuesioner(req.body, (errors3, results2) => {
+                            if(errors3) return ERROR(res, 500, errors3);
+        
+                            return SUCCESS(res, 200, "success submit form");
+                        });
                     });
                 });
             });

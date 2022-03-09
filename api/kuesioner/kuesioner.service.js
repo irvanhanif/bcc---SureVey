@@ -5,15 +5,16 @@ const tablename = "kuesioner";
 module.exports = {
     postKuesioner: (req, callback) => {
         connection.query(
-            `INSERT INTO ${tablename} (nama_kuesioner, link_kuesioner, id_kriteria, syarat_tmbh, id_paket, id_user)
-            VALUES (?,?,?,?,?,?)`,
+            `INSERT INTO ${tablename} (nama_kuesioner, link_kuesioner, id_kriteria, syarat_tmbh, id_paket, id_user, foto)
+            VALUES (?,?,?,?,?,?, ?)`,
             [
                 req.nama,
                 req.link,
                 req.id_kriteria,
                 req.syarat,
                 req.id_paket,
-                req.id_user
+                req.id_user,
+                req.foto
             ],
             (error, result) => {
                 if(error) return callback(error);
