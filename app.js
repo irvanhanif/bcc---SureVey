@@ -19,6 +19,9 @@ app.use('/user', userRouter);
 app.use('/domisili', domisiliRouter);
 app.use('/kuesioner', kuesionerRouter);
 app.use('/kriteria', kriteriaRouter);
+app.get('/photo/:filename', (req, res) => {
+    return res.sendFile(process.cwd() + '/uploads/' + req.params.filename);
+});
 
 app.listen(port, () => {
     console.log(`app run at port ${port}`);

@@ -31,7 +31,8 @@ module.exports = {
     },
     getAllKota: (callback) => {
         connection.query(
-            `SELECT * FROM ${tablenameKota}`,
+            `SELECT * FROM ${tablenameKota} k
+            JOIN ${tablenameProv} p ON k.id_provinsi = p.id_provinsi`,
             (error, result) => {
                 if(error) return callback(error);
 

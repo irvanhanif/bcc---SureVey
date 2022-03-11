@@ -59,4 +59,31 @@ module.exports = {
             }
         );
     },
+    updatePoin: (req, callback) => {
+        connection.query(
+            `UPDATE ${tablename} SET poin_user = ? WHERE id_user = ?`,
+            [
+                req.poin,
+                req.id_user
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    },
+    getPoin: (req, callback) => {
+        connection.query(
+            `SELECT poin_user FROM ${tablename} WHERE id_user = ?`,
+            [
+                req
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    },
 }

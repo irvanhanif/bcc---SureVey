@@ -1,11 +1,17 @@
 const connection = require('../config');
 
-const tablename = "voucher";
+const tablename = "user_respond";
 
 module.exports = {
-    allVoucher: (callback) => {
+    responded: (req, callback) => {
         connection.query(
-            `SELECT * FROM ${tablename}`,
+            `INSERT INTO ${tablename} (id_user, id_kuesioner, has_resp)
+            VALUES (?, ?, ?)`,
+            [
+                req.id_user,
+                req.id_kuesioner,
+                req.has_resp
+            ],
             (error, result) => {
                 if(error) return callback(error);
 
@@ -13,9 +19,10 @@ module.exports = {
             }
         );
     },
-    detailVoucher: (req, callback) => {
+    countResponden: (req, callback) => {
         connection.query(
-            `SELECT * FROM ${tablename} WHERE id_voucher = ?`,
+            `SELECT COUNT(id_kuesioner) AS total_resp, id_kuesioner 
+            FROM ${tablename} WHERE id_kuesioner = ? GROUP BY id_kuesioner`,
             [
                 req
             ],

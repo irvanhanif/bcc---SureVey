@@ -63,6 +63,16 @@ module.exports = {
 
                 return callback(null, result);
             }
+        );
+    },
+    searchKuesioner: (req, callback) => {
+        connection.query(
+            `SELECT * FROM ${tablename} WHERE nama_kuesioner LIKE '%${req}%'`,
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
         )
     }
 }

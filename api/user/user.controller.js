@@ -4,8 +4,8 @@ const {
     getUserbyEmail
 } = require('./user.service');
 const { postDomisili } = require('../domisili/domisili.service');
-const { allPaket, detailPaket } = require('./paket.service');
-const { takeVoucher } = require('./voucher.service');
+const { takeVoucher } = require('./userVoucher.service');
+const { allVoucher, detailVoucher } = require('./voucher.service');
 const { buyPaket } = require('./midtrans.service');
 const { coreApi, snap } = require('../midtrans');
 const upload = require('../multer');
@@ -54,13 +54,31 @@ module.exports = {
             });
         });
     },
-    getAllPaket: (req, res) => {
-        allPaket((error, result) => {
+    getProfil: (req, res) => {
+        if(req.decoded.user.id_user != req.params.id) return ERROR(res, 409, "user doesn't match with id");
+        getUser(req.params.id, (error, result) => {
             if(error) return ERROR(res, 500, error);
 
             return SUCCESS(res, 200, result);
-        })
+        });
     },
+    getAllVoucher: (req, res) => {
+        allVoucher((error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            return SUCCESS(res, 200, result);
+        });
+    },
+    getVoucher: (req, res) => {
+        allVoucher(req.params.id, (error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            return SUCCESS(res, 200, result);
+        });
+    },
+    voucherUser: (req, res) => {
+        if(req.body.poin);
+    }
     // buyPaket: (req, res) => {
     //     detailPaket(req.params.id, (error, result) => {
     //         if(error) return ERROR(res, 500, error);
@@ -88,37 +106,34 @@ module.exports = {
     //         });
     //     });
     // }
-    buyPaket: (req, res) => {
-        detailPaket(req.params.id, (error, result) => {
-            if(error) return ERROR(res, 500, error);
+    // buyPaket: (req, res) => {
+    //     detailPaket(req.params.id, (error, result) => {
+    //         if(error) return ERROR(res, 500, error);
         
-            req.body.transaction_details = {
-                gross_amount: result[0].harga_paket,
-                order_id: "PSV-" + Math.random().toString(35).slice(2)
-            }
+    //         req.body.transaction_details = {
+    //             gross_amount: result[0].harga_paket,
+    //             order_id: "PSV-" + Math.random().toString(35).slice(2)
+    //         }
 
-            snap.createTransaction(req.body)
-            .then((transaction_details) => {
-                let transaction_token = transaction_details.token;
-                let transaction_redirect_url = transaction_details.redirect_url;
-                return res.json({
-                    transaction: transaction_details,
-                    token: transaction_token,
-                    url: transaction_redirect_url
-                });
-            }).catch(error => {
-                return ERROR(res, 500, error);
-            });
-        });
-    },
-    uploadPhoto: (req, res) => {
-        upload(req, res, (error) => {
-            if(error) return ERROR(res, 500, error);
+    //         snap.createTransaction(req.body)
+    //         .then((transaction_details) => {
+    //             let transaction_token = transaction_details.token;
+    //             let transaction_redirect_url = transaction_details.redirect_url;
+    //             return res.json({
+    //                 transaction: transaction_details,
+    //                 token: transaction_token,
+    //                 url: transaction_redirect_url
+    //             });
+    //         }).catch(error => {
+    //             return ERROR(res, 500, error);
+    //         });
+    //     });
+    // },
+    // uploadPhoto: (req, res) => {
+    //     upload(req, res, (error) => {
+    //         if(error) return ERROR(res, 500, error);
 
-            return SUCCESS(res, 200, req.file);
-        });
-    },
-    getPhoto: (req, res) => {
-        return res.sendFile(process.cwd() + '/uploads/' + req.params.filename);
-    }
+    //         return SUCCESS(res, 200, req.file);
+    //     });
+    // },
 }
