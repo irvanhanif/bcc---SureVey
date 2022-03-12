@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const app = express();
 
-const port = process.env.PORT_APP || 4500;
+const port = process.env.PORT_APP || 5000;
 const userRouter = require('./api/user/user.router');
 const domisiliRouter = require('./api/domisili/domisili.router');
 const kuesionerRouter = require('./api/kuesioner/kuesioner.router');
