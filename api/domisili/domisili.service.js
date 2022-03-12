@@ -52,5 +52,20 @@ module.exports = {
                 return callback(null, result);
             }
         );
+    },
+    updateDomisili: (req, callback) => {
+        connection.query(
+            `UPDATE ${tablename} SET id_provinsi = ?, id_kota = ? WHERE id_domisili = ?`,
+            [
+                req.id_provinsi,
+                req.id_kota,
+                req.id_domisili
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
     }
 }

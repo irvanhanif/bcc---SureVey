@@ -86,4 +86,33 @@ module.exports = {
             }
         );
     },
+    updateUser: (req, callback) => {
+        connection.query(
+            `UPDATE ${tablename} SET id_pekerjaan = ?, id_status = ?, id_domisili = ?, update_time_user = NOW() WHERE id_user = ?`,
+            [
+                req.id_pekerjaan,
+                req.id_status,
+                req.id_domisili,
+                req.id_user
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    },
+    getDayHad: (req, callback) => {
+        connection.query(
+            `SELECT DATEDIFF(NOW(), ?) AS day`,
+            [
+                req
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    }
 }

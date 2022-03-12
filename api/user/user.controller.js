@@ -2,9 +2,11 @@ const {
     postUser,
     getUser,
     getUserbyEmail,
-    updatePoin
+    updatePoin,
+    getDayHad,
+    updateUser
 } = require('./user.service');
-const { postDomisili } = require('../domisili/domisili.service');
+const { postDomisili, updateDomisili } = require('../domisili/domisili.service');
 const { takeVoucher, getMyVoucher } = require('./userVoucher.service');
 const { allVoucher, detailVoucher } = require('./voucher.service');
 const { ERROR, SUCCESS } = require('../respon');
@@ -111,6 +113,29 @@ module.exports = {
             if(error) return ERROR(res, 500, error);
 
             return SUCCESS(res, 200, result);
+        });
+    },
+    UpdateDetailUser: (req, res) => {
+        if(req.decoded.user.id_user != req.params.id) return ERROR(res, 409, "user doesnt match");
+        req.body.id_user = req.decoded.user.id_user;
+        getDayHad(new Date(req.body.update_time_user), (error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            if(result[0].day < 30) return ERROR(res, 409, "Can't edit before 30 days");
+            updateDomisili(req.body, (errors, results) => {
+                if(errors) return ERROR(res, 500, errors);
+
+                updateUser(req.body, (errors1, results1) => {
+                    if(errors1) return ERROR(res, 500, errors1);
+    
+                    getUser(req.body.id_user, (errors2, results2) => {
+                        if(errors2) return ERROR(res, 500, errors2);
+    
+                        results2[0].token = sign({user: results2[0]}, process.env.APP_KEY, {algorithm: "HS256", expiresIn: "24h"});
+                        return SUCCESS(res, 200, results2);
+                    });
+                });
+            });
         });
     }
 }

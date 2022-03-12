@@ -8,7 +8,8 @@ const {
     getAllVoucher,
     getVoucher,
     voucherUser,
-    riwayatVoucher
+    riwayatVoucher,
+    UpdateDetailUser
 } = require('./user.controller');
 const { userToken } = require('../middleware');
 
@@ -19,5 +20,6 @@ router.get('/profil/:id', userToken, getProfil);
 router.get('/voucher', getAllVoucher);
 router.get('/voucher/:id', getVoucher);
 router.get('/myvoucher/:id', userToken, riwayatVoucher);
+router.put('/edit/:id', userToken, UpdateDetailUser);
 
 module.exports = router;
