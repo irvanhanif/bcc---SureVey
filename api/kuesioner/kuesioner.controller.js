@@ -153,7 +153,8 @@ module.exports = {
 
                 getKuesionerbyIdPayment(req.body, (errors, results) => {
                     if(errors) return ERROR(res, 500, errors);
-                
+                    
+                    if(results.length == 0) return ERROR(res, 404, "kuesioner not found");
                     req.body.id_kuesioner = results[0].id_kuesioner;
                     updatePayment(req.body, (errors1, results1) => {
                         if(errors1) return ERROR(res, 500, errors1);

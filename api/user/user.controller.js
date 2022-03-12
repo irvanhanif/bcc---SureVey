@@ -1,7 +1,8 @@
 const {
     postUser,
     getUser,
-    getUserbyEmail
+    getUserbyEmail,
+    updatePoin
 } = require('./user.service');
 const { postDomisili } = require('../domisili/domisili.service');
 const { takeVoucher } = require('./userVoucher.service');
@@ -9,6 +10,7 @@ const { allVoucher, detailVoucher } = require('./voucher.service');
 const { ERROR, SUCCESS } = require('../respon');
 const { genSaltSync, hashSync, compareSync } = require("bcryptjs");
 const { sign } = require('jsonwebtoken');
+const { toDataURL } = require('qrcode');
 
 const salt = genSaltSync(10);
 
@@ -74,6 +76,33 @@ module.exports = {
         });
     },
     voucherUser: (req, res) => {
-        if(req.body.poin);
+        req.body.id_user = req.decoded.user.id_user;
+        req.body.id_voucher = req.params.id;
+        getUser(req.body.id_user, (error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            detailVoucher(req.body.id_voucher, (errors, results) => {
+                if(errors) return ERROR(res, 500, errors);
+            
+                if(result[0].poin_user < results[0].poin_voucher) return SUCCESS(res, 200, "poin user is lower than poin voucher");
+                takeVoucher(req.body, (errors1, results1) => {
+                    if(errors1) return ERROR(res, 500, errors1);
+                    
+                    req.body.poin = result[0].poin_user - results[0].poin_voucher;
+                    updatePoin(req.body, (errors2, results2) => {
+                        if(errors2) return ERROR(res, 500, errors2);
+
+                        toDataURL(req.body.id_voucher).then(qr => {
+                            return SUCCESS(res, 200, {
+                                id_voucher: req.body.id_voucher,
+                                qrcode: qr
+                            });
+                        }).catch(err => {
+                            return ERROR(res, 500, err);
+                        });
+                    });
+                });
+            });
+        });
     }
 }

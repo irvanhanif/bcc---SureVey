@@ -13,7 +13,7 @@ const { userToken } = require('../middleware');
 
 router.post('/register', register);
 router.post('/login', login);
-// router.post('/redeem', voucherUser);
+router.post('/redeem/:id', userToken, voucherUser);
 router.get('/profil/:id', userToken, getProfil);
 router.get('/voucher', getAllVoucher);
 router.get('/voucher/:id', getVoucher);
