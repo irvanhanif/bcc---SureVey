@@ -7,7 +7,8 @@ const {
     getProfil,
     getAllVoucher,
     getVoucher,
-    voucherUser
+    voucherUser,
+    riwayatVoucher
 } = require('./user.controller');
 const { userToken } = require('../middleware');
 
@@ -17,5 +18,6 @@ router.post('/redeem/:id', userToken, voucherUser);
 router.get('/profil/:id', userToken, getProfil);
 router.get('/voucher', getAllVoucher);
 router.get('/voucher/:id', getVoucher);
+router.get('/myvoucher/:id', userToken, riwayatVoucher);
 
 module.exports = router;

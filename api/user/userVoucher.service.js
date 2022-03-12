@@ -17,5 +17,18 @@ module.exports = {
                 return callback(null, result);
             }
         );
+    },
+    getMyVoucher: (req, callback) => {
+        connection.query(
+            `SELECT * FROM ${tablename} WHERE id_user = ?`,
+            [
+                req
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
     }
 }

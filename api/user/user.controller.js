@@ -5,7 +5,7 @@ const {
     updatePoin
 } = require('./user.service');
 const { postDomisili } = require('../domisili/domisili.service');
-const { takeVoucher } = require('./userVoucher.service');
+const { takeVoucher, getMyVoucher } = require('./userVoucher.service');
 const { allVoucher, detailVoucher } = require('./voucher.service');
 const { ERROR, SUCCESS } = require('../respon');
 const { genSaltSync, hashSync, compareSync } = require("bcryptjs");
@@ -103,6 +103,14 @@ module.exports = {
                     });
                 });
             });
+        });
+    },
+    riwayatVoucher: (req, res) => {
+        if(req.decoded.user.id_user != req.params.id) return ERROR(res, 409, "user doesnt match");
+        getMyVoucher(req.params.id, (error, result) => {
+            if(error) return ERROR(res, 500, error);
+
+            return SUCCESS(res, 200, result);
         });
     }
 }
