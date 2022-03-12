@@ -151,7 +151,7 @@ module.exports = {
             updateResponse(req.body, (error, result) => {
                 if(error) return ERROR(res, 500, error);
 
-                getKuesionerbyIdPayment(req.body.id_payment, (errors, results) => {
+                getKuesionerbyIdPayment(req.body, (errors, results) => {
                     if(errors) return ERROR(res, 500, errors);
                 
                     req.body.id_kuesioner = results[0].id_kuesioner;

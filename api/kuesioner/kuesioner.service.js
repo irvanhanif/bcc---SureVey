@@ -82,7 +82,7 @@ module.exports = {
             `UPDATE ${tablename} SET has_pay = ? WHERE id_kuesioner = ?`,
             [
                 req.has_pay,
-                req.body.id_kuesioner
+                req.id_kuesioner
             ],
             (error, result) => {
                 if(error) return callback(error);
@@ -95,7 +95,7 @@ module.exports = {
         connection.query(
             `SELECT id_kuesioner FROM ${tablename} WHERE id_payment = ?`,
             [
-                req.id_kuesioner
+                req.id_payment
             ],
             (error, result) => {
                 if(error) return callback(error);
