@@ -5,12 +5,11 @@ const tablename = "user_respond";
 module.exports = {
     responded: (req, callback) => {
         connection.query(
-            `INSERT INTO ${tablename} (id_user, id_kuesioner, has_resp)
-            VALUES (?, ?, ?)`,
+            `INSERT INTO ${tablename} (id_user, id_kuesioner)
+            VALUES (?, ?)`,
             [
                 req.id_user,
-                req.id_kuesioner,
-                req.has_resp
+                req.id_kuesioner
             ],
             (error, result) => {
                 if(error) return callback(error);

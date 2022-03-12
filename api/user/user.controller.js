@@ -6,9 +6,6 @@ const {
 const { postDomisili } = require('../domisili/domisili.service');
 const { takeVoucher } = require('./userVoucher.service');
 const { allVoucher, detailVoucher } = require('./voucher.service');
-const { buyPaket } = require('./midtrans.service');
-const { coreApi, snap } = require('../midtrans');
-const upload = require('../multer');
 const { ERROR, SUCCESS } = require('../respon');
 const { genSaltSync, hashSync, compareSync } = require("bcryptjs");
 const { sign } = require('jsonwebtoken');
@@ -70,7 +67,7 @@ module.exports = {
         });
     },
     getVoucher: (req, res) => {
-        allVoucher(req.params.id, (error, result) => {
+        detailVoucher(req.params.id, (error, result) => {
             if(error) return ERROR(res, 500, error);
 
             return SUCCESS(res, 200, result);
@@ -79,61 +76,4 @@ module.exports = {
     voucherUser: (req, res) => {
         if(req.body.poin);
     }
-    // buyPaket: (req, res) => {
-    //     detailPaket(req.params.id, (error, result) => {
-    //         if(error) return ERROR(res, 500, error);
-
-    //         req.body.transaction_details = {
-    //             gross_amount: result[0].harga_paket,
-    //             order_id: "PSV-" + Math.random().toString(35).slice(2)
-    //         }
-
-    //         coreApi.charge(req.body)
-    //         .then((chargeResponse) => {
-    //             let data = {
-    //                 id_payment: chargeResponse.order_id,
-    //                 id_paket: req.params.id,
-    //                 id_user: req.decoded.user.id_user,
-    //                 response_midtrans: JSON.stringify(chargeResponse)
-    //             }
-    //             buyPaket(data, (error, result) => {
-    //                 if(error) return ERROR(res, 500, error);
-
-    //                 return SUCCESS(res, 200, "success buy paket");
-    //             })
-    //         }).catch((error) => {
-    //             return ERROR(res, 500, error);
-    //         });
-    //     });
-    // }
-    // buyPaket: (req, res) => {
-    //     detailPaket(req.params.id, (error, result) => {
-    //         if(error) return ERROR(res, 500, error);
-        
-    //         req.body.transaction_details = {
-    //             gross_amount: result[0].harga_paket,
-    //             order_id: "PSV-" + Math.random().toString(35).slice(2)
-    //         }
-
-    //         snap.createTransaction(req.body)
-    //         .then((transaction_details) => {
-    //             let transaction_token = transaction_details.token;
-    //             let transaction_redirect_url = transaction_details.redirect_url;
-    //             return res.json({
-    //                 transaction: transaction_details,
-    //                 token: transaction_token,
-    //                 url: transaction_redirect_url
-    //             });
-    //         }).catch(error => {
-    //             return ERROR(res, 500, error);
-    //         });
-    //     });
-    // },
-    // uploadPhoto: (req, res) => {
-    //     upload(req, res, (error) => {
-    //         if(error) return ERROR(res, 500, error);
-
-    //         return SUCCESS(res, 200, req.file);
-    //     });
-    // },
 }

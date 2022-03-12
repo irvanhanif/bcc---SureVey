@@ -126,6 +126,7 @@ CREATE TABLE bcc.payment
 (
     id_payment VARCHAR(45) NOT NULL,
     response_midtrans TEXT,
+    payment_method SMALLINT,
     buy_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id_payment)
@@ -142,6 +143,7 @@ CREATE TABLE bcc.kuesioner
     id_user SMALLINT,
     id_payment VARCHAR(45),
     foto VARCHAR(255),
+    has_pay BOOLEAN,
     create_time_kuesioner TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time_kuesioner TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -160,7 +162,6 @@ CREATE TABLE bcc.user_respond
 (
     id_user SMALLINT,
     id_kuesioner SMALLINT,
-    has_resp BOOLEAN,
     time_resp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (id_user)

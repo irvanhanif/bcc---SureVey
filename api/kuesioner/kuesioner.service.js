@@ -5,8 +5,8 @@ const tablename = "kuesioner";
 module.exports = {
     postKuesioner: (req, callback) => {
         connection.query(
-            `INSERT INTO ${tablename} (nama_kuesioner, link_kuesioner, id_kriteria, syarat_tmbh, id_paket, id_user, foto)
-            VALUES (?,?,?,?,?,?, ?)`,
+            `INSERT INTO ${tablename} (nama_kuesioner, link_kuesioner, id_kriteria, syarat_tmbh, id_paket, id_user, id_payment, foto, has_pay)
+            VALUES (?,?,?,?,?,?,?,?,?)`,
             [
                 req.nama,
                 req.link,
@@ -14,7 +14,9 @@ module.exports = {
                 req.syarat,
                 req.id_paket,
                 req.id_user,
-                req.foto
+                req.id_payment,
+                req.foto,
+                req.has_pay
             ],
             (error, result) => {
                 if(error) return callback(error);
@@ -68,6 +70,33 @@ module.exports = {
     searchKuesioner: (req, callback) => {
         connection.query(
             `SELECT * FROM ${tablename} WHERE nama_kuesioner LIKE '%${req}%'`,
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    },
+    updatePayment: (req, callback) => {
+        connection.query(
+            `UPDATE ${tablename} SET has_pay = ? WHERE id_kuesioner = ?`,
+            [
+                req.has_pay,
+                req.body.id_kuesioner
+            ],
+            (error, result) => {
+                if(error) return callback(error);
+
+                return callback(null, result);
+            }
+        );
+    },
+    getKuesionerbyIdPayment: (req, callback) => {
+        connection.query(
+            `SELECT id_kuesioner FROM ${tablename} WHERE id_payment = ?`,
+            [
+                req.id_kuesioner
+            ],
             (error, result) => {
                 if(error) return callback(error);
 
